@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_easyfiel_production_secondary_name": {
+            "value": null
+        },
+        "servers_easy_fiel_production_secondary_name": {
+            "value": null
+        },
+        "storageAccounts_sqlvauglacbdu27hyi_name": {
+            "value": null
+        },
+        "serverfarms_easyfiel_production_secondary_ap_name": {
+            "value": null
+        },
+        "components_easyfiel_production_secondary_name": {
+            "value": null
+        }
+    }
+}
