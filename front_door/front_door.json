@@ -1,0 +1,142 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceName": {
+      "type": "String",
+      "metadata": {
+        "description": "The name of the frontdoor resource."
+      }
+    },
+    "location": {
+      "type": "String",
+      "metadata": {
+        "description": "The location of the frontdoor resource."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/frontdoors",
+      "apiVersion": "2020-05-01",
+      "name": "[parameters('resourceName')]",
+      "location": "[parameters('location')]",
+      "tags": {},
+      "properties": {
+        "frontdoorId": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production",
+        "friendlyName": "easyfiel-production",
+        "enabledState": "Enabled",
+        "healthProbeSettings": [
+          {
+            "name": "healthProbeSettings-1607794370802",
+            "properties": {
+              "path": "/",
+              "protocol": "Https",
+              "intervalInSeconds": 30,
+              "healthProbeMethod": "Head",
+              "enabledState": "Enabled"
+            },
+            "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/healthProbeSettings/healthProbeSettings-1607794370802"
+          }
+        ],
+        "loadBalancingSettings": [
+          {
+            "name": "loadBalancingSettings-1607794370802",
+            "properties": {
+              "sampleSize": 4,
+              "successfulSamplesRequired": 2,
+              "additionalLatencyMilliseconds": 0
+            },
+            "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/loadBalancingSettings/loadBalancingSettings-1607794370802"
+          }
+        ],
+        "frontendEndpoints": [
+          {
+            "name": "easyfiel-production-azurefd-net",
+            "properties": {
+              "hostName": "easyfiel-production.azurefd.net",
+              "sessionAffinityEnabledState": "Enabled",
+              "sessionAffinityTtlSeconds": 0,
+              "webApplicationFirewallPolicyLink": {
+                "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourcegroups/easyfiel_waf_rg/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/webAppFirewallPolicy"
+              },
+              "customHttpsConfiguration": null
+            },
+            "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/frontendEndpoints/easyfiel-production-azurefd-net"
+          }
+        ],
+        "backendPools": [
+          {
+            "name": "pool1",
+            "properties": {
+              "backends": [
+                {
+                  "address": "easyfiel-production-secondary.azurewebsites.net",
+                  "privateLinkResourceId": null,
+                  "privateLinkLocation": null,
+                  "privateEndpointStatus": null,
+                  "privateLinkApprovalMessage": null,
+                  "enabledState": "Enabled",
+                  "httpPort": 80,
+                  "httpsPort": 443,
+                  "priority": 1,
+                  "weight": 50,
+                  "backendHostHeader": "easyfiel-production-secondary.azurewebsites.net"
+                },
+                {
+                  "address": "easyfiel-production.azurewebsites.net",
+                  "privateLinkResourceId": null,
+                  "privateLinkLocation": null,
+                  "privateEndpointStatus": null,
+                  "privateLinkApprovalMessage": null,
+                  "enabledState": "Enabled",
+                  "httpPort": 80,
+                  "httpsPort": 443,
+                  "priority": 1,
+                  "weight": 50,
+                  "backendHostHeader": "easyfiel-production.azurewebsites.net"
+                }
+              ],
+              "loadBalancingSettings": {
+                "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/loadBalancingSettings/loadBalancingSettings-1607794370802"
+              },
+              "healthProbeSettings": {
+                "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/healthProbeSettings/healthProbeSettings-1607794370802"
+              }
+            },
+            "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/backendPools/pool1"
+          }
+        ],
+        "routingRules": [
+          {
+            "name": "rule1",
+            "properties": {
+              "frontendEndpoints": [
+                {
+                  "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/frontendEndpoints/easyfiel-production-azurefd-net"
+                }
+              ],
+              "acceptedProtocols": ["Http", "Https"],
+              "patternsToMatch": ["/*"],
+              "enabledState": "Enabled",
+              "routeConfiguration": {
+                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+                "customForwardingPath": null,
+                "forwardingProtocol": "HttpsOnly",
+                "backendPool": {
+                  "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/backendPools/pool1"
+                },
+                "cacheConfiguration": null
+              }
+            },
+            "id": "/subscriptions/007d325e-01d0-43cf-a35b-03dd3a192e49/resourceGroups/easyfiel_front_door_rg/providers/Microsoft.Network/frontdoors/easyfiel-production/routingRules/rule1"
+          }
+        ],
+        "backendPoolsSettings": {
+          "enforceCertificateNameCheck": "Enabled",
+          "sendRecvTimeoutSeconds": 30
+        }
+      }
+    }
+  ]
+}
